@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, docChanges } from '@angular/fire/firestore';
+import { validate } from 'class-validator';
 import { map, switchMap } from 'rxjs/operators';
 
 import { UserDocument } from '../../../../core/firestore/users';
-import { validate } from 'class-validator';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +16,14 @@ export class UserService {
     private db: AngularFirestore,
   ) { }
 
-  async createUser(user: UserDocument) {
+  async createUser(id: string, user: UserDocument) {
     const errors = await validate(user);
 
     if (errors.length > 0) {
       throw errors;
     }
 
-    return await this.collection.add(user);
+    return await this.collection.doc<UserDocument>(id).set(user);
   }
 
   getUser(id: string) {
