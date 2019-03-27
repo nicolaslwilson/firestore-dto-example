@@ -11,13 +11,13 @@ import { validate } from 'class-validator';
 // });
 
 export const onUserUpdate = functions.firestore.document(`/users/{id}`).onWrite(async (change, context) => {
-  const update = change.after;
+  const update = change.after.data();
   const userDoc = new UserDocument();
-  
   Object.assign(userDoc, update);
   const errors = await validate(userDoc);
-
   if (errors.length > 0) {
-    change.after.ref.set(change.before.data());
+    return change.after.ref.set(change.before.data());
   }
+  
+  return;
 })
