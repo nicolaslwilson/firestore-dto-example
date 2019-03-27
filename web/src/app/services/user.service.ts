@@ -34,20 +34,24 @@ export class UserService {
             throw new Error('Document not found');
           }
 
-          return snapshot.data();
+          const data = snapshot.data()
+          return data;
         }),
-        switchMap(doc => this.validateUserDocument(doc))
+        switchMap(data => this.validateUserDocument(data))
       );
   }
 
-  private async validateUserDocument(doc) {
+  private async validateUserDocument(data: any) {
+    const doc = new UserDocument();
+    Object.assign(doc, data);
+
     const errors = await validate(doc);
 
     if (errors.length > 0) {
       throw errors;
     }
 
-    return <UserDocument>doc;
+    return doc;
   }
 
 }
