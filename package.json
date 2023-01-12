@@ -4,7 +4,7 @@
   "description": "Example of using class-validators to share types between frontend and backend typescript",
   "main": " ",
   "dependencies": {
-    "class-validator": "^0.9.1"
+    "class-validator": "^0.14.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.10",
